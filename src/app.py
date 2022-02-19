@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from base64 import b64encode
+
 from flask import Flask, render_template, request, flash
 import requests
 import json
@@ -20,6 +20,7 @@ def getOpenseaMetadata(contract_address:str, token_id:int):
     token_id = str(hex(token_id))
     r = requests.get(f"https://api.opensea.io/api/v1/metadata/{contract_address}/{token_id}?format=json")
     return json.loads(r.text)
+
 
 def verifyContract(contract_address) -> str:
     '''
@@ -56,13 +57,13 @@ def findDuplicates(image_url):
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
-        # token_id = 0
-        # contract_address="None"
+
         try:
             token_id = int(request.form["tokenId"])
             contract_address = request.form["contractAddress"]
 
         except Exception as e:
+            print(e)
             flash('Invalid contract address or token ID', 'danger')
             return render_template('index.html')        
 
@@ -71,15 +72,19 @@ def index():
 
             try:
                 NFTMetadata = getOpenseaMetadata(contract_address, token_id)
+                
+                # json_data = json.dumps(NFTMetadata, indent=4, sort_keys=True)
 
-                name = NFTMetadata['name']
+                name = f"<a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://opensea.io/assets/{contract_address}/{token_id}\">{NFTMetadata['name']}</a>"
+                
                 image_url = NFTMetadata['image']
-                description = NFTMetadata['description']
-
-                json_data = json.dumps(NFTMetadata, indent=4, sort_keys=True)
+                description = NFTMetadata['description']                
                 
                 # duplicates = findDuplicates(image_url) # Maybe make async in the future
+                duplicates = "There might be some duplicates. Who knows"
 
+                verify = f"The NFT's <a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://etherscan.io/address/{contract_address}\">contract</a> is {verifyContract(contract_address)}."
+                
                 return render_template('index.html', **locals())
             
             except Exception as e:

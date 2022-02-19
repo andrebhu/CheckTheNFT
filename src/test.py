@@ -1,28 +1,43 @@
-import requests
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Feb 18 21:16:52 2022
+
+@author: kkrao
+"""
+
+from serpapi import GoogleSearch
 import json
-def fetchABI(contract_address):
-    '''
-    Retrieves ABI based on contract
-    '''
-    print("Fetching contract ABI")
-    url = "https://api.etherscan.io/api"
 
+def findDuplicates(image_url):
+    """
+    image_url : url of the image for which you want to check if a duplicate exists
+
+    Returns
+        1 if original
+        0 if duplicate/coutnerfeit
+
+    """
     params = {
-        "module": "contract",
-        "action": "getabi",
-        "address": contract_address,
-        "apikey": "GTU9P9K5741Y761585SRRY38NP8I1YMC8M"
+      "engine": "google_reverse_image",
+      "image_url": image_url,
+      "api_key": "cecf4cdc7fbbcf37ba6c3bf17a7d025894988aca8c4e41be585d23991ec5f7db",
     }
-
-    response = requests.get(url, data=params)
-
-
-    response_json = response.json()
-    print(response_json)
-    print(response_json['status'])
-    print(type(response_json['status']))
-    # abi_json = json.loads(response_json['result'])
     
-    # return abi_json
+    search = GoogleSearch(params)
+    results = search.get_dict()
+    image_results = results['image_results']
 
-fetchABI('0x552d72f86f04098a4eaeda6d7b665ac12f846ad2')
+    links = [r['link'] for r in image_results]
+
+    
+    # for result in image_results:
+    #     # print(result['link'])
+    #     if 'opensea.io' in result['link']:
+    #         dupCount += 1
+
+    # return dupCount
+    print(len(links))
+    print(links)
+
+
+findDuplicates("https://lh3.googleusercontent.com/lvT5NVKfuYs98D0vReydoXqPmYqvVvgvvD-5oSSzil6p4EPPiQAFOf5hb7P2ytJRawl2fWXjKtko2J981yGwp13_-qVi36rs_5rM")

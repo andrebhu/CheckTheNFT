@@ -16,19 +16,20 @@
 		<div class="container-fluid w-75">
 			<h1 class="text-center">CheckTheNFT</h1>
 
-			<div class="row border m-3 p-3">
+			<div class="row border m-3 p-3 w-75 mx-auto">
 				<div class="col-md-12">
-					<p class="text-center">0x1b79c7832ed9358E024F9e46E9c8b6f56633691B, 51</p>
+					<p class="text-center">Sample: 0x1b79c7832ed9358E024F9e46E9c8b6f56633691B, 51</p>
 					<form action="/" method="post" enctype="multipart/form-data">
-						<div class="row">
-							<div class="col-md-6">
-								<input class="form-control" type="text" name="contractAddress" placeholder='Contract Address'/>
+						<div class="row mt-3 px-5 w-50 mx-auto">
+							<div class="row-md-6 mt-1">
+								<input class="form-control" type="text" name="contractAddress" placeholder='Contract Address' required/>
 							</div>
-							<div class="col-md-6">
-								<input class="form-control" type="text" name="tokenId" placeholder='Token ID'/>
+							<div class="row-md-6 mt-1">
+								<input class="form-control" type="text" name="tokenId" placeholder='Token ID' required/>
 							</div>
 						</div>
-						<div class="row mt-3 px-5">
+
+						<div class="row my-3 px-5">
 							<input class="btn btn-primary w-50 mx-auto" type="submit" value="Submit">
 						</div>
 					</form>
@@ -42,20 +43,19 @@
 					{% endwith %}
 
 					{% if name %}	
-						<div class="container col-md-6 border mx-auto">
-							<style> pre { white-space: pre-wrap; word-wrap: break-word; } </style>
-							<pre>{{name | safe}}</pre>
-							<pre>{{description | safe}}</pre>
-							<!-- <pre>{{metadata | safe}}</pre> -->
-						</div>
-						<div class="col-md-6 border mx-auto">
-							<img class="w-100 img-fluid" src="{{ image_url | safe }}" onerror="this.style.visibility = 'hidden'">
-						</div>
-					{% endif %}
-					
-					{% if duplicates %}
-						<div class="container row">
+						<div class="container col-md-6 border mx-auto w-75">
+							
+							<h2 class="text-center">{{name | safe}}</h2>
+
+							<div class="container border mx-auto">
+								{{description | safe}}
+							</div>
+							
+							<p class="text-center">{{verify | safe}}</p>
 							<p class="text-center">{{duplicates | safe}}</p>
+						</div>
+						<div class="col-md-6 border my-4 mx-auto">
+							<img class="w-100 img-fluid" src="{{ image_url | safe }}" onerror="this.style.visibility = 'hidden'">
 						</div>
 					{% endif %}
 				</div>
