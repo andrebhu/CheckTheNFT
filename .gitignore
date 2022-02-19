@@ -244,3 +244,7 @@ lerna-debug.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# images
+/src/images
+*.pylint.d
