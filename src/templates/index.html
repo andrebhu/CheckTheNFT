@@ -42,28 +42,9 @@
 					<img class="w-100" src="{{ image | safe }}" id="img" onerror="this.style.visibility = 'hidden'">
 				</div>
 				<div class="col-md-6 border">
-					<table class="table table-striped">
-						<thead class="thead-dark">
-						</thead>
-					</table>
 					<pre>{{metadata | safe}}</pre>
 				</div>
 			</div>
-
-			<script type="text/javascript">
-				$(document).ready(function () {
-			  
-				  // Use the given data to create 
-				  // the table and display it
-				  $('table').bootstrapTable({
-					data: mydata
-				  });
-				});
-			  
-				// Specify the JSON data to be displayed
-				var mydata = metadata;
-				console.log(metadata);
-			</script>
 
 			{% endif %}
 

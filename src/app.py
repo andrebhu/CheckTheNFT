@@ -46,14 +46,6 @@ def index():
                 image_metadata = getJSON(contract_address, token_id) # Currently executes two requests to the network, make it one later
                 image_url = image_metadata['image']
                 
-
-                # Image duplicate search
-                dups_found = duplicates(image_url)
-                if dups_found == 0:
-                    duplicate = f"Image is Original. Image has {dups_found} duplicates online."
-                else:
-                    duplicate = f"Image has {dups_found} duplicates online."
-
                 # NFT Metadata
                 metadata = image_metadata
 
@@ -63,6 +55,14 @@ def index():
                 metadata = "[Error] Invalid NFT"
         else:
             return render_template("index.html")
+
+        
+        # Image duplicate search
+        dups_found = duplicates(image_url)
+        if dups_found == 0:
+            duplicate = f"Image is Original. Image has {dups_found} duplicates online."
+        else:
+            duplicate = f"Image has {dups_found} duplicates online."
 
         return render_template("index.html", metadata=metadata, image=image_url, duplicate=duplicate)
 
