@@ -8,16 +8,13 @@ import requests
 
 from check_image_exists_online import duplicates
 
-
 # from getImageUrl import getImageUrl
 from getJSON import getJSON
-
 
 app = Flask(__name__)
 
 # app.config["BOOTSTRAP_SERVE_LOCAL"] = True
 # bootstrap = Bootstrap(app)
-
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -46,13 +43,11 @@ def index():
             try:
                 # TODO: Check max file size of NFT? Could it crash the server?
     
-
                 image_metadata = getJSON(contract_address, token_id) # Currently executes two requests to the network, make it one later
                 image_url = image_metadata['image']
+                
 
-                # b64 encode file to pass back to page
-                # image = b64encode(file).decode("utf-8")
-
+                # Image duplicate search
                 dups_found = duplicates(image_url)
                 if dups_found == 0:
                     duplicate = f"Image is Original. Image has {dups_found} duplicates online."
@@ -60,7 +55,6 @@ def index():
                     duplicate = f"Image has {dups_found} duplicates online."
 
                 # NFT Metadata
-                # metadata = str(image_metadata)
                 metadata = image_metadata
 
             # If anything goes wrong
