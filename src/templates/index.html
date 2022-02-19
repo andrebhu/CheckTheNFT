@@ -18,7 +18,7 @@
 				<div class="col-md-12">
 					<h>0x1b79c7832ed9358E024F9e46E9c8b6f56633691B, 51</h>
 					<form action="/" method="post" enctype="multipart/form-data">
-						<h2>NFT Properties</h2>
+						<h2 class="text-center">NFT Properties</h2>
 						<div class="row">
 							<div class="col-md-6">
 								<input class="form-control" type="text" name="contractAddress" placeholder='Contract Address'/>
@@ -42,6 +42,7 @@
 					<img class="w-100" src="{{ image | safe }}" id="img" onerror="this.style.visibility = 'hidden'">
 				</div>
 				<div class="col-md-6 border">
+					<style> pre { white-space: pre-wrap; word-wrap: break-word; } </style>
 					<pre>{{metadata | safe}}</pre>
 				</div>
 			</div>

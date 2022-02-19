@@ -4,6 +4,7 @@ from base64 import b64encode
 from flask import Flask, render_template, request
 # from flask_bootstrap import Bootstrap
 import requests
+import json
 
 
 from check_image_exists_online import duplicates
@@ -47,7 +48,8 @@ def index():
                 image_url = image_metadata['image']
                 
                 # NFT Metadata
-                metadata = image_metadata
+                metadata = json.dumps(image_metadata, indent=4, sort_keys=True)
+                print(metadata)
 
             # If anything goes wrong
             except Exception as e:
@@ -60,9 +62,9 @@ def index():
         # Image duplicate search
         dups_found = duplicates(image_url)
         if dups_found == 0:
-            duplicate = f"Image is Original. Image has {dups_found} duplicates online."
+            duplicate = f"No Duplicates Found. Image has {dups_found} duplicates online."
         else:
-            duplicate = f"Image has {dups_found} duplicates online."
+            duplicate = f"Duplicates Found! Image has {dups_found} duplicates online."
 
         return render_template("index.html", metadata=metadata, image=image_url, duplicate=duplicate)
 
