@@ -68,9 +68,6 @@ def index():
 
 
         if token_id and contract_address:
-            image_url = ""
-            duplicationsInfo = ""
-            NFTMetadata = ""
 
             try:
                 NFTMetadata = getOpenseaMetadata(contract_address, token_id)
@@ -87,7 +84,7 @@ def index():
             
             except Exception as e:
                 print(e)
-                flash(f'Invalid NFT\nContract Address: {contract_address}\nToken ID: {token_id}', 'danger')
+                flash(f'Invalid NFT<br>{contract_address}<br>{token_id}', 'danger')
         else:
             flash('Missing contract address or token ID', 'danger')
 

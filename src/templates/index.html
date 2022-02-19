@@ -29,20 +29,20 @@
 							</div>
 						</div>
 						<div class="row mt-3 px-5">
-							<input class="btn btn-primary btn-lg " type="submit" value="Submit">
+							<input class="btn btn-primary w-50 mx-auto" type="submit" value="Submit">
 						</div>
 					</form>
 
 					{% with messages = get_flashed_messages(with_categories=true) %}
 						{% if messages %}
 							{% for category, message in messages %}
-							<div class="text-danger text-center"> {{message}}</div>
+							<div class="text-danger text-center"> {{message | safe}}</div>
 							{% endfor %}
 						{% endif %}
 					{% endwith %}
 
 					{% if name %}	
-						<div class="col-md-6 border mx-auto">
+						<div class="container col-md-6 border mx-auto">
 							<style> pre { white-space: pre-wrap; word-wrap: break-word; } </style>
 							<pre>{{name | safe}}</pre>
 							<pre>{{description | safe}}</pre>
@@ -54,7 +54,7 @@
 					{% endif %}
 					
 					{% if duplicates %}
-						<div class="row">
+						<div class="container row">
 							<p class="text-center">{{duplicates | safe}}</p>
 						</div>
 					{% endif %}

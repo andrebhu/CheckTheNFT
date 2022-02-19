@@ -6,10 +6,8 @@ Created on Fri Feb 18 21:16:52 2022
 """
 
 import logging
-
 from serpapi import GoogleSearch
 import json
-
 
 def duplicates(image_url):
     """
