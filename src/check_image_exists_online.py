@@ -8,6 +8,7 @@ Created on Fri Feb 18 21:16:52 2022
 import logging
 
 from serpapi import GoogleSearch
+import json
 
 
 def duplicates(image_url):
@@ -27,10 +28,19 @@ def duplicates(image_url):
     
     search = GoogleSearch(params)
     results = search.get_dict()
-    n_found = results['search_information']['total_results']
-    print(results.keys())
-    #-2 because uploading to github raw counts as twice 
-    return n_found-2 
+    print(results['pagination'])
+    image_results = results['image_results']
+
+    dupCount = 0
+
+    
+    
+    for result in image_results:
+        print(result['link'])
+        if 'opensea.io' in result['link']:
+            dupCount += 1
+
+    return dupCount
     
 
 def main():
@@ -38,9 +48,9 @@ def main():
     logging.getLogger().setLevel(logging.INFO)
 
     original = "https://raw.githubusercontent.com/andrebhu/TreeHacks2022/main/src/images/original.jpg"
-    fake = "https://raw.githubusercontent.com/andrebhu/TreeHacks2022/main/src/images/monkey.jpg"
+    # fake = "https://raw.githubusercontent.com/andrebhu/TreeHacks2022/main/src/images/monkey.jpg"
+    fake ="https://lh3.googleusercontent.com/9l0UICNfBK-bBfZ8EGbJPPC9L5MFGeJApN6IcxuKMfE4fPntsIYCE-dmZkAhJvk7kFcjUJbYY6znSS_c4t_Og59bwTpng4roMV8Vx1Y=s0"
     n_found = duplicates(fake)
-    print(n_found)
     
     if n_found==0:
         logging.info("Image is original.")
