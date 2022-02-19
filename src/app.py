@@ -5,9 +5,11 @@ from flask import Flask, render_template, request
 # from flask_bootstrap import Bootstrap
 import requests
 
-from getImageUrl import getImageUrl
+
 from check_image_exists_online import duplicates
 
+
+# from getImageUrl import getImageUrl
 from getJSON import getJSON
 
 
@@ -37,16 +39,16 @@ def index():
 
         # Information to send back to page
         metadata = "Picture Found." # output can be a string
-        image = "" # image should be returned as a b64 encoded string
         duplicate = "" # duplicate can be a string
+        image_url = ""
 
         if token_id:
             try:
                 # TODO: Check max file size of NFT? Could it crash the server?
-                # TODO: Function that retrieves image from NFT token
+    
 
                 image_metadata = getJSON(contract_address, token_id) # Currently executes two requests to the network, make it one later
-                image_url = getImageUrl(image_metadata)
+                image_url = image_metadata['image']
 
                 # b64 encode file to pass back to page
                 # image = b64encode(file).decode("utf-8")
@@ -68,7 +70,6 @@ def index():
         else:
             return render_template("index.html")
 
-        print(image[:50])
         return render_template("index.html", metadata=metadata, image=image_url, duplicate=duplicate)
 
     elif request.method == "GET":
