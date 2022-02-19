@@ -70,3 +70,31 @@
     # except Exception as e:
     #     print(e)
 
+    # Information to send back to page
+        # metadata = "Picture" # output can be a string
+        # duplicates = "" # duplicate can be a string
+        # image_url = ""
+
+    #     if token_id:
+    #         try:    
+    #             image_metadata = getOpenseaMetadata(contract_address, token_id)
+    #             image_url = image_metadata['image']
+                
+    #             # NFT Metadata
+    #             metadata = json.dumps(image_metadata, indent=4, sort_keys=True)
+    #             print(metadata)
+
+    #         # If anything goes wrong
+    #         except Exception as e:
+    #             print(e)
+    #             metadata = "[Error] Invalid NFT"
+    #     else:
+    #         return render_template("index.html")
+
+    #     # Image duplicate search
+    #     duplicates = findDuplicates(image_url)
+
+    #     return render_template("index.html", metadata=metadata, image=image_url, duplicate=duplicates)
+
+    # elif request.method == "GET":
+    #     return render_template("index.html")

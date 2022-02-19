@@ -33,7 +33,7 @@ def duplicates(image_url):
     dupCount = 0
     
     for result in image_results:
-        print(result['link'])
+        # print(result['link'])
         if 'opensea.io' in result['link']:
             dupCount += 1
 
