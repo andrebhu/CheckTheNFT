@@ -1,2 +1,2 @@
-# TreeHacks2022
-Some stuff with NFTs
+# TreeHacks 2022 NFT Project? (needs a better name)
+
