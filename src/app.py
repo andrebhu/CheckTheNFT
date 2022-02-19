@@ -3,7 +3,6 @@
 from base64 import b64encode
 from flask import Flask, render_template, request
 from flask_bootstrap import Bootstrap
-
 import requests
 
 app = Flask(__name__)
@@ -12,11 +11,11 @@ app.config["BOOTSTRAP_SERVE_LOCAL"] = True
 bootstrap = Bootstrap(app)
 
 
-def retrieveAsset(tokenId):
-    url = ''
-    data = {
-    }
-    r = requests.get()
+def retrieveImage(tokenId):
+    '''
+    Given a tokenId, return corresponding image
+    '''
+
     return
 
 
@@ -38,6 +37,8 @@ def index():
 
                 # just returns input
                 output = f"{tokenId}"
+
+                retrieveImage(output)
 
                 # b64 encode file to pass back to page
                 # image = b64encode(file).decode("utf-8")
