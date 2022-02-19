@@ -1,4 +1,7 @@
 gunicorn==19.10.0
-Flask==1.1.2
-Bootstrap-Flask==1.2.0
+flask==2.0.3
+# Bootstrap-Flask==1.2.0
+flask-bootstrap==3.3.7.1
 requests==2.22.0
+google-search-results==2.4.1
+web3==5.28.0
