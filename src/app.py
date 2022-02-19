@@ -5,7 +5,7 @@ from flask import Flask, render_template, request
 # from flask_bootstrap import Bootstrap
 import requests
 
-from retrieveImage import getImageUrl, retrieveImage
+from getImageUrl import getImageUrl
 from check_image_exists_online import duplicates
 
 from getJSON import getJSON
@@ -44,22 +44,19 @@ def index():
                 # TODO: Check max file size of NFT? Could it crash the server?
                 # TODO: Function that retrieves image from NFT token
 
-                # just returns input
-                # output = f"{token_id}"
-
-                image = retrieveImage(contract_address, token_id)
                 image_metadata = getJSON(contract_address, token_id) # Currently executes two requests to the network, make it one later
-
+                image_url = getImageUrl(image_metadata)
+            
                 output = str(image_metadata)
 
                 # b64 encode file to pass back to page
                 # image = b64encode(file).decode("utf-8")
-                imageUrl = getImageUrl(contract_address, token_id)
-                dups_found = duplicates(imageUrl)
-                if dups_found == 0:
-                    output += "Image is Original."
-                else:
-                    output += f"Image has {dups_found} duplicates online."
+                # imageUrl = getImageUrl(contract_address, token_id)
+                # dups_found = duplicates(imageUrl)
+                # if dups_found == 0:
+                #     output += "Image is Original."
+                # else:
+                #     output += f"Image has {dups_found} duplicates online."
 
             # If anything goes wrong
             except Exception as e:
@@ -69,7 +66,7 @@ def index():
             return render_template("index.html")
 
         print(image[:50])
-        return render_template("index.html", output=output, image=image)
+        return render_template("index.html", output=output, image=image_url)
 
     elif request.method == "GET":
         return render_template("index.html")

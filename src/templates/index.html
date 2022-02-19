@@ -39,7 +39,7 @@
 			{% if output %}
 			<div class="row">
 				<div class="col-md-6 border">
-					<img class="w-100" src="data:image/png;base64,{{ image | safe }}" id="img" onerror="this.style.visibility = 'hidden'">
+					<img class="w-100" src="{{ image | safe }}" id="img" onerror="this.style.visibility = 'hidden'">
 				</div>
 				<div class="col-md-6 border">
 					<pre>{{output | safe}}</pre>
