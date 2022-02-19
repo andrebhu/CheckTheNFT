@@ -28,17 +28,19 @@ def duplicates(image_url):
     search = GoogleSearch(params)
     results = search.get_dict()
     n_found = results['search_information']['total_results']
-
+    print(results.keys())
     #-2 because uploading to github raw counts as twice 
     return n_found-2 
     
 
 def main():
+
     logging.getLogger().setLevel(logging.INFO)
 
     original = "https://raw.githubusercontent.com/andrebhu/TreeHacks2022/main/src/images/original.jpg"
     fake = "https://raw.githubusercontent.com/andrebhu/TreeHacks2022/main/src/images/monkey.jpg"
     n_found = duplicates(fake)
+    print(n_found)
     
     if n_found==0:
         logging.info("Image is original.")
