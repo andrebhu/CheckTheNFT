@@ -1,2 +1,4 @@
-# TreeHacks 2022 NFT Project? (needs a better name)
+# CheckTheNFT
 
+## Problem
+Many artists' art are being used without permission in the creation of NFTs
