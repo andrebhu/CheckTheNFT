@@ -33,11 +33,12 @@ def index():
             output = f"[ERROR] Not Found\
             \nContract Address: {contract_address}\
             \nToken Id: {token_id}"
-            return render_template("index.html", output=output)
+            return render_template("index.html", metadata=metadata)
 
         # Information to send back to page
-        output = "Picture Found." # output can be a string
+        metadata = "Picture Found." # output can be a string
         image = "" # image should be returned as a b64 encoded string
+        duplicate = "" # duplicate can be a string
 
         if token_id:
             try:
@@ -46,27 +47,29 @@ def index():
 
                 image_metadata = getJSON(contract_address, token_id) # Currently executes two requests to the network, make it one later
                 image_url = getImageUrl(image_metadata)
-            
-                output = str(image_metadata)
 
                 # b64 encode file to pass back to page
                 # image = b64encode(file).decode("utf-8")
-                # imageUrl = getImageUrl(contract_address, token_id)
-                # dups_found = duplicates(imageUrl)
-                # if dups_found == 0:
-                #     output += "Image is Original."
-                # else:
-                #     output += f"Image has {dups_found} duplicates online."
+
+                dups_found = duplicates(image_url)
+                if dups_found == 0:
+                    duplicate = f"Image is Original. Image has {dups_found} duplicates online."
+                else:
+                    duplicate = f"Image has {dups_found} duplicates online."
+
+                # NFT Metadata
+                # metadata = str(image_metadata)
+                metadata = image_metadata
 
             # If anything goes wrong
             except Exception as e:
                 print(e)
-                output = "[Error] Invalid NFT"
+                metadata = "[Error] Invalid NFT"
         else:
             return render_template("index.html")
 
         print(image[:50])
-        return render_template("index.html", output=output, image=image_url)
+        return render_template("index.html", metadata=metadata, image=image_url, duplicate=duplicate)
 
     elif request.method == "GET":
         return render_template("index.html")

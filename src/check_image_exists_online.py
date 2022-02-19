@@ -28,12 +28,9 @@ def duplicates(image_url):
     
     search = GoogleSearch(params)
     results = search.get_dict()
-    print(results['pagination'])
     image_results = results['image_results']
 
     dupCount = 0
-
-    
     
     for result in image_results:
         print(result['link'])
@@ -42,7 +39,7 @@ def duplicates(image_url):
 
     return dupCount
     
-
+"""
 def main():
 
     logging.getLogger().setLevel(logging.INFO)
@@ -60,4 +57,4 @@ def main():
 if __name__ == "__main__":
     main()
 
-
+"""
