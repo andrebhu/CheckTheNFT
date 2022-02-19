@@ -34,6 +34,7 @@
   // For a list of possibilities, see
   // https://developer.chrome.com/extensions/declare_permissions
   "permissions": [
+    "https://api.opensea.io/*",
     "storage" // Allows access to chrome.storage API
 ],
 
@@ -47,7 +48,8 @@
   "content_scripts": [
     {
       "matches": [
-        "*://*/*"
+        "http://opensea.io/*",
+        "https://opensea.io/*"
       ],
       "js": [
         "/src/content.js"
