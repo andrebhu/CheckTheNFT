@@ -18,11 +18,21 @@ def index():
     if request.method == "POST":
         
         # Retrieve NFT information from page, rename `file` later
-        token_id = int(request.form["tokenId"])
-        contract_address = request.form["contractAddress"]
+        token_id = 0
+        contract_address="None"
+        try:
+            token_id = int(request.form["tokenId"])
+            contract_address = request.form["contractAddress"]
+            
+        except Exception as e:
+            print(e)
+            output = f"[ERROR] Not Found\
+            \nContract Address: {contract_address}\
+            \nToken Id: {token_id}"
+            return render_template("index.html", output=output)
 
         # Information to send back to page
-        output = "tbd" # output can be a string
+        output = "Picture Found." # output can be a string
         image = "" # image should be returned as a b64 encoded string
 
         if token_id:
@@ -41,7 +51,7 @@ def index():
             # If anything goes wrong
             except Exception as e:
                 print(e)
-                output = "Invalid NFT"
+                output = "[Error] Invalid NFT"
         else:
             return render_template("index.html")
 
