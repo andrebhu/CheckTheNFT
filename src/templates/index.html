@@ -2,9 +2,7 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Image Metadata Viewer</title>
-	{% block bootstrap_css %}
-	{{ bootstrap.load_css() }}
-	{% endblock %}
+
 	<style>
 		* {
 			font-family: serif;
@@ -18,8 +16,9 @@
 		<div class="row border m-3 p-3">
 			<div class="col-md-12">
 				<form action="/" method="post" enctype="multipart/form-data">
-					<strong>NFT tokenId:</strong>
-					<input type="text" name="tokenId"/>
+					<strong>NFT:</strong>
+					<input type="text" name="tokenId" placeholder='tokenId'/>
+					<input type="text" name="contractAddress" placeholder='contractAddress'/>
 
 					<input type="submit" value="Submit"/>					
 				</form>
@@ -40,7 +39,4 @@
 		{% endif %}
 	</div>
 
-	{% block bootstrap_js %}
-	{{ bootstrap.load_js() }}
-	{% endblock %}
 </body>
