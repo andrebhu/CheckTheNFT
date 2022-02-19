@@ -18,18 +18,22 @@ var tokenID = urlArray[5];
 console.log("Contract Address:", contractAddress)
 console.log("Token ID:", tokenID)
 
-var nft_MetaData = getJSON(contractAddress, tokenID);
-console.log(nft_MetaData);
-// var image_url = nft_MetaData['image'];
-// console.log("Image URL:", image_url);
-
+var nft_MetaData = getJSON(contractAddress, tokenID).then(response);
+console.log("meta", nft_MetaData);
 
 function getJSON(contractAddress, tokenID) {
-    fetch(`https://api.opensea.io/api/v1/metadata/${contractAddress}/${tokenID}`).then(r => r.text()).then(result => {
+    fetch(`https://api.opensea.io/api/v1/metadata/${contractAddress}/${tokenID}`,
+    {
+        method: "GET",
+    }).then(r => r.text()).then(result => {
         // Result now contains the response text, do what you want...
-        return r.text();
+        console.log(result);
+        return result;
     })
+    .catch(error => console.warn(error));
 }
+// var image_url = nft_MetaData['image'];
+// console.log("Image URL:", image_url);
 
 
 
