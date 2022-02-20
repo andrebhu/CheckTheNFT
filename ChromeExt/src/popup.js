@@ -8,16 +8,18 @@
 const element1 = document.getElementById("script");
 element1.addEventListener("click", async () => {    
     await goPython(); 
-//	await toggleLoader();
+	await toggleLoader();
 });
 
 function getValue(url){
    var value= $.ajax({ 
       url: url, 
-      async: false
-   }).responseJSON;
-	console.log(value)
-   return value;
+      async: true,
+	  success : function(responseData){
+		  			console.log(responseData)
+		  			upload_metrics(responseData)
+				return responseData}
+   	})
 }
 
 function style(metric, value){
@@ -52,7 +54,7 @@ function duplicate_sentence(duplicates){
 	return "    "+duplicates +" duplicate found"
 }
 
-async function goPython(){
+function goPython(){
 	chrome.tabs.query({active: true, lastFocusedWindow: true, currentWindow: true}, tabs => {
 	    let url = tabs[0].url;
 		console.log(url)
@@ -61,39 +63,42 @@ async function goPython(){
 		console.log(newURL)
 		var result = getValue(newURL)
 		console.log(result)
-		
-			
-		var [color, logo] = style("duplicates",result["duplicates"])
-		var image = document.createElement('img');
-		image.src = logo
-		image.height = 30
-		image.style="vertical-align:middle"
-		document.getElementById("duplicates").innerHTML = duplicate_sentence(result["duplicates"])
-		document.getElementById("duplicates").style = "border:2px solid #696969; border-radius:5px; font-size:16px; padding-left: 10px; padding-right: 10px; padding-bottom: 5px; padding-top: 5px; display:inline height:30px; width:230px; text-align: left; font-weight: bold;"
-		document.getElementById("duplicates").style.backgroundColor = color
-		document.getElementById("duplicates").prepend(image)	
-		
-		var [color, logo] = style("enhance",result["enhance"])
-		var image = document.createElement('img');
-		image.src = logo
-		image.height = 30
-		image.style="vertical-align:middle"
-		document.getElementById("enhance").innerHTML = "    "+result["enhance"];
-		document.getElementById("enhance").style = "border:2px solid #696969; border-radius:5px; font-size:16px; padding-left: 10px; padding-right: 10px; padding-bottom: 5px; padding-top: 5px; display:inline height:30px; width:230px; text-align: left; font-weight: bold;"
-		document.getElementById("enhance").style.backgroundColor = color
-		document.getElementById("enhance").prepend(image)	
-			
-		var [color, logo] = style("verify",result["verify"])
-		var image = document.createElement('img');
-		image.src = logo
-		image.height = 30
-		image.style="vertical-align:middle"
-		document.getElementById("verify").innerHTML = "    "+result["verify"];
-		document.getElementById("verify").style = "border:2px solid #696969; border-radius:5px; font-size:16px; padding-left: 10px; padding-right: 10px; padding-bottom: 5px; padding-top: 5px; display:inline height:30px; width:230px; text-align: left; font-weight: bold;"
-		document.getElementById("verify").style.backgroundColor = color
-		document.getElementById("verify").prepend(image)
-	
 	})
+}
+
+function upload_metrics(result){
+	var [color, logo] = style("duplicates",result["duplicates"])
+	var image = document.createElement('img');
+	image.src = logo
+	image.height = 30
+	image.style="vertical-align:middle"
+	document.getElementById("duplicates").innerHTML = duplicate_sentence(result["duplicates"])
+	document.getElementById("duplicates").style = "border:2px solid #696969; border-radius:5px; font-size:16px; padding-left: 10px; padding-right: 10px; padding-bottom: 5px; padding-top: 5px; display:inline height:30px; width:230px; text-align: left; font-weight: bold;"
+	document.getElementById("duplicates").style.backgroundColor = color
+	document.getElementById("duplicates").prepend(image)	
+	
+	var [color, logo] = style("enhance",result["enhance"])
+	var image = document.createElement('img');
+	image.src = logo
+	image.height = 30
+	image.style="vertical-align:middle"
+	document.getElementById("enhance").innerHTML = "    "+result["enhance"];
+	document.getElementById("enhance").style = "border:2px solid #696969; border-radius:5px; font-size:16px; padding-left: 10px; padding-right: 10px; padding-bottom: 5px; padding-top: 5px; display:inline height:30px; width:230px; text-align: left; font-weight: bold;"
+	document.getElementById("enhance").style.backgroundColor = color
+	document.getElementById("enhance").prepend(image)	
+		
+	var [color, logo] = style("verify",result["verify"])
+	var image = document.createElement('img');
+	image.src = logo
+	image.height = 30
+	image.style="vertical-align:middle"
+	document.getElementById("verify").innerHTML = "    "+result["verify"];
+	document.getElementById("verify").style = "border:2px solid #696969; border-radius:5px; font-size:16px; padding-left: 10px; padding-right: 10px; padding-bottom: 5px; padding-top: 5px; display:inline height:30px; width:230px; text-align: left; font-weight: bold;"
+	document.getElementById("verify").style.backgroundColor = color
+	document.getElementById("verify").prepend(image)
+	
+	// stop circle progress bar
+	document.getElementById("loader").style.display = "none"
 }
 
 async function toggleLoader() {
