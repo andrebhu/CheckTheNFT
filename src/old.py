@@ -98,3 +98,20 @@
 
     # elif request.method == "GET":
     #     return render_template("index.html")
+
+# def main():
+    
+#     logging.getLogger().setLevel(logging.INFO)
+
+#     original = "https://raw.githubusercontent.com/andrebhu/TreeHacks2022/main/src/images/original.jpg"
+#     # fake = "https://raw.githubusercontent.com/andrebhu/TreeHacks2022/main/src/images/monkey.jpg"
+#     fake ="https://lh3.googleusercontent.com/9l0UICNfBK-bBfZ8EGbJPPC9L5MFGeJApN6IcxuKMfE4fPntsIYCE-dmZkAhJvk7kFcjUJbYY6znSS_c4t_Og59bwTpng4roMV8Vx1Y=s0"
+#     n_found = duplicates(fake)
+    
+#     if n_found==0:
+#         logging.info("Image is original.")
+#     else:
+#         logging.info(f"Image has {n_found} duplicates online.")
+
+# if __name__ == "__main__":
+#     main()

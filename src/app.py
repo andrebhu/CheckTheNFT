@@ -5,15 +5,12 @@ from flask import Flask, render_template, request, flash, url_for, redirect
 import requests
 import json
 import warnings
+from serpapi import GoogleSearch
+from nn.check_if_real import predict
 
 warnings.filterwarnings('ignore')
 
-from serpapi import GoogleSearch
-from findDuplicates import findDuplicates
-from nn.check_if_real import predict
-
 app = Flask(__name__)
-
 app.config['SECRET_KEY'] = b'\xa7\xd8\x89JB\xa9sj\x05\x03S\x1a\x83\xb3\x15\xee\x92\x9f&\xe0l\xdc\xc3\xd3'
 
 
@@ -122,7 +119,6 @@ def index():
             image_url = NFTMetadata['image']
             description = NFTMetadata['description']                
             
-
             # TODO: Make bottom two async
             # duplicates_links = findDuplicates(image_url)
 
