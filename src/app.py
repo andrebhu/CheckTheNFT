@@ -6,6 +6,7 @@ import requests
 import json
 
 from findDuplicates import findDuplicates
+from nn.check_if_real import predict
 
 app = Flask(__name__)
 
@@ -41,6 +42,15 @@ def verifyContract(contract_address) -> str:
         return 'verified'
     elif r.json()['status'] == '0':
         return 'unverified'
+
+def checkEnhance(image_url):
+    enhanced = predict(image_url)
+    
+    if enhanced:
+        return "This NFT has no image enchancements."
+    else:
+        return "This NFT may have image enchancements."
+
     
 
 @app.route("/", methods=["GET", "POST"])
@@ -70,9 +80,10 @@ def index():
                 description = NFTMetadata['description']                
                 
                 duplicates_links = findDuplicates(image_url) # Maybe make async in the future
-                # duplicates = "There might be some duplicates. Who knows"
 
                 duplicates_msg = f"We have found {len(duplicates_links)} similar results"
+
+                enhance_msg = checkEnhance(image_url)
 
                 verify = f"The NFT's <a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://etherscan.io/address/{contract_address}\">contract</a> is {verifyContract(contract_address)}"
                 

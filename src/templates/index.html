@@ -2,6 +2,7 @@
 
 <html lang="en">
 	<head>
+		<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 		<!-- Required meta tags -->
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,7 +17,7 @@
 		<div class="container-fluid w-75">
 			<h1 class="text-center my-2">CheckTheNFT</h1>
 
-			<div class="row border m-3 p-3 w-75 mx-auto">
+			<div class="row border rounded bg-light m-3 p-3 w-75 mx-auto">
 				<div class="col-md-12">
 					<p class="text-center">Sample: 0x1b79c7832ed9358E024F9e46E9c8b6f56633691B, 51</p>
 					
@@ -50,13 +51,13 @@
 							
 							<h2 class="text-center">{{name | safe}}</h2>
 
-							<div class="container border my-3 mx-auto">
+							<div class="container bg-white border my-3 mx-auto">
 								{{description | safe}}
 							</div>
 							
 							<p class="text-center">{{verify | safe}}</p>
 							<p class="text-center">{{duplicates_msg | safe}}</p>
-
+							<p class="text-center">{{enhance_msg | safe}}</p>
 						</div>
 
 						<div class="col-md-6 my-4 mx-auto">

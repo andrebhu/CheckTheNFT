@@ -117,7 +117,7 @@ def predict(image_url):
     
     model, input_size = initialize_model(num_classes, width, channels, feature_extract, use_pretrained=True)
     
-    CHECKPOINT_PATH = "./model.pth"
+    CHECKPOINT_PATH = "./nn/model.pth"
     loaded_checkpoint = torch.load(CHECKPOINT_PATH, map_location=torch.device('cpu'))
     epoch = loaded_checkpoint["epoch"]
     model_state = loaded_checkpoint["model_state"]
