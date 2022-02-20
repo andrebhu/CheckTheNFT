@@ -58,6 +58,7 @@ async function goPython(){
 		console.log(url)
 		let newURL = "http://localhost:5000/opensea?url="+url
 		//	chrome.tabs.create({ url: newURL });
+		console.log(newURL)
 		var result = getValue(newURL)
 		console.log(result)
 		
