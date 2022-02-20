@@ -17,11 +17,26 @@ function getValue(url){
    return value;
 }
 
-function color_duplicates(duplicates){
-	if (duplicates > 0) {
-  		return "#FFAF42" 
+function style(metric, value){
+	if (metric == "duplicates"){
+		if (value > 0) {
+	  		return ["#FFAF42", "https://raw.githubusercontent.com/andrebhu/CheckTheNFT/main/ChromeExt/icons/caution.png"]
+		}
+		return ["#00aaf2", "https://raw.githubusercontent.com/andrebhu/CheckTheNFT/main/ChromeExt/icons/check.png"]
 	}
-	return "#00aaf2"
+	if (metric == "enhance"){
+		if (value.includes("manipulations")) {
+	  		return ["#FFAF42", "https://raw.githubusercontent.com/andrebhu/CheckTheNFT/main/ChromeExt/icons/caution.png"]
+		}
+		return ["#00aaf2", "https://raw.githubusercontent.com/andrebhu/CheckTheNFT/main/ChromeExt/icons/check.png"]
+	}
+	if (metric == "verify"){
+		if (value.includes("unverified")) {
+	  		return ["#FFAF42", "https://raw.githubusercontent.com/andrebhu/CheckTheNFT/main/ChromeExt/icons/caution.png"]
+		}
+		return ["#00aaf2", "https://raw.githubusercontent.com/andrebhu/CheckTheNFT/main/ChromeExt/icons/check.png"]
+	}
+	
 }
 
 function goPython(){
@@ -33,13 +48,37 @@ chrome.tabs.query({active: true, lastFocusedWindow: true, currentWindow: true}, 
 //	chrome.tabs.create({ url: newURL });
 	var result = getValue(newURL)
 	console.log(result)
-	document.getElementById("duplicates").innerHTML = "Found "+result["duplicates"] +" duplicates online";
-	document.getElementById("duplicates").style = "border:2px solid #696969; border-radius:5px; font-size:18px; padding-left: 10px; padding-bottom: 5px; padding-top: 5px"
-	document.getElementById("duplicates").style.backgroundColor = color_duplicates(result["duplicates"])
+	
+		
+	var [color, logo] = style("duplicates",result["duplicates"])
+	var image = document.createElement('img');
+	image.src = logo
+	image.height = 30
+	image.style="vertical-align:middle"
+	document.getElementById("duplicates").innerHTML = "    "+result["duplicates"] +" duplicates found online";
+	document.getElementById("duplicates").style = "border:2px solid #696969; border-radius:5px; font-size:16px; padding-left: 10px; padding-right: 10px; padding-bottom: 5px; padding-top: 5px; display:inline height:30px; width:250px;"
+	document.getElementById("duplicates").style.backgroundColor = color
+	document.getElementById("duplicates").prepend(image)	
+	
+	var [color, logo] = style("enhance",result["enhance"])
+	var image = document.createElement('img');
+	image.src = logo
+	image.height = 30
+	image.style="vertical-align:middle"
+	document.getElementById("enhance").innerHTML = "    "+result["enhance"];
+	document.getElementById("enhance").style = "border:2px solid #696969; border-radius:5px; font-size:16px; padding-left: 10px; padding-right: 10px; padding-bottom: 5px; padding-top: 5px; display:inline height:30px; width:250px;"
+	document.getElementById("enhance").style.backgroundColor = color
+	document.getElementById("enhance").prepend(image)	
+		
+	var [color, logo] = style("verify",result["verify"])
+	var image = document.createElement('img');
+	image.src = logo
+	image.height = 30
+	image.style="vertical-align:middle"
+	document.getElementById("verify").innerHTML = "    "+result["verify"];
+	document.getElementById("verify").style = "border:2px solid #696969; border-radius:5px; font-size:16px; padding-left: 10px; padding-right: 10px; padding-bottom: 5px; padding-top: 5px; display:inline height:30px; width:250px;"
+	document.getElementById("verify").style.backgroundColor = color
+	document.getElementById("verify").prepend(image)
 
-		
-		
-	document.getElementById("enhance").innerHTML = result["enhance_msg"];
-	document.getElementById("verify").innerHTML = result["verify"];
 })
 }

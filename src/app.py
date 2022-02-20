@@ -73,9 +73,9 @@ def checkEnhance(image_url):
     enhanced = predict(image_url)
 
     if enhanced:
-        return "This NFT has no image enchancements"
+        return "Image not manipulated"
     else:
-        return "This NFT may have image enchancements"
+        return "Image manipulations found"
 
 
 # Thread functions
@@ -147,14 +147,14 @@ def index():
             # enhance_msg = checkEnhance(image_url)
             # enhance_msg = "This image may be enhanced"
 
-            verify = f"The NFT's <a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://etherscan.io/address/{contract_address}\">contract</a> is {verifyContract(contract_address)}"
+            verify = f"NFT's <a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://etherscan.io/address/{contract_address}\">contract</a> is {verifyContract(contract_address)}"
             
             end = time() # Analyzing performance
             time_elapsed = "{:.2f}s".format(end - start)
 
             # return render_template('index.html', **locals())
             return {"duplicates": max(len(messages[0])-2, 0),
-                    "enhance_msg": enhance_msg,
+                    "enhance": enhance_msg,
                     "verify": verify
                     }
         
