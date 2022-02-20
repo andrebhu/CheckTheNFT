@@ -5,16 +5,16 @@
  * change the corresponding popup.html file.
  */
 
+const element = document.getElementById("script");
+element.addEventListener("click", goPython);
 
-document.addEventListener('DOMContentLoaded', function () {
-    var links = document.getElementsByTagName("a");
-    for (var i = 0; i < links.length; i++) {
-        (function () {
-            var ln = links[i];
-            var location = ln.href;
-            ln.onclick = function () {
-                chrome.tabs.create({active: true, url: location});
-            };
-        })();
-    }
+function goPython(){
+chrome.tabs.query({active: true, lastFocusedWindow: true, currentWindow: true}, tabs => {
+    let url = tabs[0].url;
+	let newURL = "http://localhost:5000/opensea?url="+url
+	chrome.tabs.create({ url: newURL });
+//	alert(url)
+	
+    // use `url` here inside the callback because it's asynchronous!
 });
+}

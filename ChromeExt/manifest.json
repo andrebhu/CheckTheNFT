@@ -15,7 +15,9 @@
   "manifest_version": 2,
   "name": "Check the NFTs",
   "version": "0.1",
-
+  "background": {
+  "scripts": ["background.js"]
+  },
   // Recommended
   "description": "NFT Chrome Extension @ TreeHacks 2022",
   "icons": {
@@ -35,7 +37,9 @@
   // https://developer.chrome.com/extensions/declare_permissions
   "permissions": [
     "https://api.opensea.io/*",
-    "storage" // Allows access to chrome.storage API
+    "storage", // Allows access to chrome.storage API
+	"http://localhost:5000/",
+	"tabs"
 ],
 
   // Probably will not need to be modified unless you *really*
