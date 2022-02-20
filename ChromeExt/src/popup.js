@@ -18,7 +18,7 @@ function getValue(url){
 	  success : function(responseData){
 		  			console.log(responseData)
 		  			upload_metrics(responseData)
-				return responseData}
+				}
    	})
 }
 
