@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, flash
 import requests
 import json
 
-from check_image_exists_online import duplicates
+from findDuplicates import findDuplicates
 
 app = Flask(__name__)
 
@@ -43,17 +43,6 @@ def verifyContract(contract_address) -> str:
         return 'unverified'
     
 
-def findDuplicates(image_url):
-    '''
-    Future, maybe return all found links on opensea as well?
-    '''
-    dups_found = duplicates(image_url)
-    if dups_found == 0:
-        return f"No Duplicates Found. Image has {dups_found} duplicates online."
-    else:
-        return f"Duplicates Found! Image has {dups_found} duplicates online."
-
-
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
@@ -76,14 +65,16 @@ def index():
                 # json_data = json.dumps(NFTMetadata, indent=4, sort_keys=True)
 
                 name = f"<a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://opensea.io/assets/{contract_address}/{token_id}\">{NFTMetadata['name']}</a>"
-                
+
                 image_url = NFTMetadata['image']
                 description = NFTMetadata['description']                
                 
-                # duplicates = findDuplicates(image_url) # Maybe make async in the future
-                duplicates = "There might be some duplicates. Who knows"
+                duplicates_links = findDuplicates(image_url) # Maybe make async in the future
+                # duplicates = "There might be some duplicates. Who knows"
 
-                verify = f"The NFT's <a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://etherscan.io/address/{contract_address}\">contract</a> is {verifyContract(contract_address)}."
+                duplicates_msg = f"We have found {len(duplicates_links)} similar results"
+
+                verify = f"The NFT's <a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://etherscan.io/address/{contract_address}\">contract</a> is {verifyContract(contract_address)}"
                 
                 return render_template('index.html', **locals())
             
