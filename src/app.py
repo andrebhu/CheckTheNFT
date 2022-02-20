@@ -58,7 +58,6 @@ def findDuplicates(image_url):
 
     results = GoogleSearch(params).get_dict()
     n_found = results['search_information']['total_results'] 
-    print("Finished findDuplicates")
 
     image_results = results['image_results']
     links = [r['link'] for r in image_results]    
@@ -69,9 +68,7 @@ def checkEnhance(image_url):
     """
     Use `nn` models to detect whether an image may have been enhanced or not
     """
-
     enhanced = predict(image_url)
-
     if enhanced:
         return "Image not manipulated"
     else:
@@ -88,7 +85,7 @@ def getDuplicatesOutput(image_url, result, index):
 
 
 # Application routes
-@app.route("/opensea", methods=["GET"])
+@app.route("/opensea")
 def opensea():
     try:
         url = request.args.get('url')
@@ -96,9 +93,31 @@ def opensea():
             print(url)
             if 'https://opensea.io/assets/' in url:
                 contract_address, token_id = url.split('0x')[1].split("/")
-                return redirect(f'/?contract=0x{contract_address}&token={token_id}')
+
+                NFTMetadata = getOpenseaMetadata('0x' + contract_address, int(token_id))
+
+                image_url = NFTMetadata['image']
+                messages = [None] * 2
+
+                duplicates_thread = Thread(target=getDuplicatesOutput, args=(image_url, messages, 0))
+                enhance_thread = Thread(target=getEnhanceOutput, args=(image_url, messages, 1))
+            
+                duplicates_thread.start()
+                enhance_thread.start()
+
+                duplicates_thread.join()
+                enhance_thread.join()
+            
+                duplicates_msg = f"We have found {len(messages[0])} similar results"
+                enhance_msg = messages[1]
+        
+                verify = f"{verifyContract(contract_address)} NFT <a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://etherscan.io/address/{contract_address}\">contract</a>"
+                return {"duplicates": max(len(messages[0])-2, 0),
+                    "enhance": enhance_msg,
+                    "verify": verify,
+                    "redirect": f'/?contract={contract_address}&token={token_id}'
+                    }
         else:
-            print(f"No url? {url}")
             return redirect(url_for('index'))
 
     except Exception as e:
@@ -106,14 +125,12 @@ def opensea():
         return redirect(url_for('index'))
 
 
-
-@app.route("/", methods=["GET"])
+@app.route("/index")
+@app.route("/")
 def index():
     start = time() # Analyzing performance
-
     token_id = request.args.get('token')
     contract_address = request.args.get('contract')
-
 
     if token_id and contract_address:
         try:
@@ -125,11 +142,6 @@ def index():
             image_url = NFTMetadata['image']
             description = NFTMetadata['description']                
             
-            # TODO: Make bottom two async
-            # duplicates_links = findDuplicates(image_url)
-
-            # enhance_msg, duplicates_links = asyncio.run(processImage(image_url))            
-
             messages = [None] * 2
 
             duplicates_thread = Thread(target=getDuplicatesOutput, args=(image_url, messages, 0))
@@ -144,19 +156,12 @@ def index():
             duplicates_msg = f"We have found {len(messages[0])} similar results"
             enhance_msg = messages[1]
 
-            # enhance_msg = checkEnhance(image_url)
-            # enhance_msg = "This image may be enhanced"
-
             verify = f"{verifyContract(contract_address)} NFT <a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://etherscan.io/address/{contract_address}\">contract</a>"
             
             end = time() # Analyzing performance
             time_elapsed = "{:.2f}s".format(end - start)
 
-            # return render_template('index.html', **locals())
-            return {"duplicates": max(len(messages[0])-2, 0),
-                    "enhance": enhance_msg,
-                    "verify": verify
-                    }
+            return render_template('index.html', **locals())
         
         except Exception as e:
             print(e)
