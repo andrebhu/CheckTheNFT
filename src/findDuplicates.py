@@ -5,11 +5,12 @@ Created on Fri Feb 18 21:16:52 2022
 @author: kkrao
 """
 
-import logging
+
 from serpapi import GoogleSearch
 import json
+import asyncio
 
-def findDuplicates(image_url):
+async def findDuplicates(image_url):
     """
     image_url : url of the image for which you want to check if a duplicate exists
 
