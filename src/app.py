@@ -37,7 +37,7 @@ def verifyContract(contract_address) -> str:
     }
 
     r = requests.get(url, data=data)
-
+    
     if r.json()['status'] == '1':
         return 'verified'
     elif r.json()['status'] == '0':
@@ -47,9 +47,9 @@ def checkEnhance(image_url):
     enhanced = predict(image_url)
     
     if enhanced:
-        return "This NFT has no image enchancements."
+        return "This NFT has no image enchancements"
     else:
-        return "This NFT may have image enchancements."
+        return "This NFT may have image enchancements"
 
 
 
@@ -70,23 +70,17 @@ def opensea():
         return redirect('index.html')
 
 
-    
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    # if request.method == "POST":
-
-    # try:
-    #     token_id = int(request.form["tokenId"])
-    #     contract_address = request.form["contractAddress"]
-
-    # except Exception as e:
-    #     print(e)
-    #     flash('Invalid contract address or token ID', 'danger')
-    #     return render_template('index.html')   
      
     token_id = request.args.get('token')
     contract_address = request.args.get('contract')
+
+    
+    if not isinstance(token_id, str) or not isinstance(contract_address, str):
+        flash('Bad input', 'danger')
+        return render_template('index.html')
 
     if token_id and contract_address:
         try:
@@ -98,11 +92,14 @@ def index():
             image_url = NFTMetadata['image']
             description = NFTMetadata['description']                
             
-            duplicates_links = findDuplicates(image_url) # Maybe make async in the future
 
+            # TODO: Make bottom two async
+            # duplicates_links = findDuplicates(image_url)
+            duplicates_links = []
             duplicates_msg = f"We have found {len(duplicates_links)} similar results"
 
-            enhance_msg = checkEnhance(image_url)
+            # enhance_msg = checkEnhance(image_url)
+            enhance_msg = "This image may be enhanced"
 
             verify = f"The NFT's <a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://etherscan.io/address/{contract_address}\">contract</a> is {verifyContract(contract_address)}"
             
@@ -110,10 +107,7 @@ def index():
         
         except Exception as e:
             print(e)
-            flash(f'Invalid NFT<br>{contract_address}<br>{token_id}', 'danger')
-    else:
-        flash('Missing contract address or token ID', 'danger')
-
+            flash(f'Invalid contract or token', 'danger')
 
     return render_template('index.html')  
 
