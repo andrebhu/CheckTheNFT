@@ -12,46 +12,80 @@
 let url = location.href;
 
 const urlArray = url.split("/");
-var contractAddress = urlArray[4];
-var tokenID = urlArray[5];
+let contractAddress = urlArray[4];
+let tokenID = urlArray[5];
 
 console.log("Contract Address:", contractAddress)
 console.log("Token ID:", tokenID)
 
-var nft_MetaData = getJSON(contractAddress, tokenID).then(response);
-console.log("meta", nft_MetaData);
+// function loadJSON() {
+//     var url = `https://api.opensea.io/api/v1/metadata/${contractAddress}/${tokenID}?format=json`;
 
-function getJSON(contractAddress, tokenID) {
-    fetch(`https://api.opensea.io/api/v1/metadata/${contractAddress}/${tokenID}`,
-    {
-        method: "GET",
-    }).then(r => r.text()).then(result => {
-        // Result now contains the response text, do what you want...
-        console.log(result);
-        return result;
-    })
-    .catch(error => console.warn(error));
-}
-// var image_url = nft_MetaData['image'];
-// console.log("Image URL:", image_url);
+//     var settings = {
+//         type: "GET",
+//         dataType: "json",
+//         url: url,
+//         data: "{}",
+//         success: function (result) {
+//             console.log("Success!");
+//         },
+//         error: function(err) {
+//             alert('ERROR');
+//         }
+//     };
 
+//     $.ajax(settings);
+// }
 
+// function getJSON(contractAddress, tokenID) {
+//     fetch(`https://api.opensea.io/api/v1/metadata/${contractAddress}/${tokenID}`,
+//     {
+//         method: "GET",
+//     }).then(r => r.text()).then(result => {
+//         // Result now contains the response text, do what you want...
+//         // console.log(result);
+//         return result;
+//     })
+//     .catch(error => console.warn(error));
+// }
 
-// var elements = document.getElementsByTagName('*');
+// async function getJSON(contractAddress, tokenID) {
+//     const response = await fetch(`https://api.opensea.io/api/v1/metadata/${contractAddress}/${tokenID}?format=json`);
 
-// for (var i = 0; i < elements.length; i++) {
-//     var element = elements[i];
+//     return response.json();
+// }
 
-//     for (var j = 0; j < element.childNodes.length; j++) {
-//         var node = element.childNodes[j];
+// Fetch JSON Metadata
+// var metaURL= `https://api.opensea.io/api/v1/metadata/${contractAddress}/${tokenID}?format=json`;
+// function showJSON(response) {
+//     let xhr = new XMLHttpRequest();
 
-//         if (node.nodeType === 3) {
-//             var text = node.nodeValue;
-//             var replacedText = text.replace(/cal/gi, "butt"); // replaces "cal," "Cal", etc. with "butt"
+//     xhr.open('GET', metaURL, true);
 
-//             if (replacedText !== text) {
-//                 element.replaceChild(document.createTextNode(replacedText), node);
-//               }
+//     xhr.onload() = function() {
+//         if (xhr.status == 200) {
+//             console.log("Success!");
+//             let image_url = JSON.parse(this.response)
+//             console.log(image_url);
 //         }
 //     }
+//     xhr.send();
 // }
+
+
+// $.ajax({
+//     type: "POST",
+//     url: "~/pythoncode.py",
+//     data: { param: text}
+//   }).done(function( o ) {
+//      // do something
+//   });
+
+// console.log("meta", { nft_MetaData });
+
+// var json = JSON.parse(nft_MetaData);
+
+
+
+// var image_url = json['image'];
+// console.log("Image URL:", image_url);

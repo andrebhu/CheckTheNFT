@@ -5,16 +5,20 @@
  * change the corresponding popup.html file.
  */
 
-const element = document.getElementById("script");
-element.addEventListener("click", goPython);
+chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    var currentTab = tabs[0]; // there will be only one in this array
+    console.log(currentTab); // also has properties like currentTab.id
+    var tabUrl = currentTab.url;
 
-function goPython(){
-chrome.tabs.query({active: true, lastFocusedWindow: true, currentWindow: true}, tabs => {
-    let url = tabs[0].url;
-	let newURL = "http://localhost:5000/opensea?url="+url
-	chrome.tabs.create({ url: newURL });
-//	alert(url)
-	
-    // use `url` here inside the callback because it's asynchronous!
+    var flaskUrl = `http://localhost:5000/opensea?url=${tabUrl}`;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        var y = document.getElementById("script");
+        y.addEventListener("click", openIndex);
+        
+    });
+    
+    function openIndex() {
+    chrome.tabs.create({active: true, url: flaskUrl});
+    }
 });
-}

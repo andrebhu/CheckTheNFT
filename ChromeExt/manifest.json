@@ -15,6 +15,7 @@
   "manifest_version": 2,
   "name": "Check the NFTs",
   "version": "0.1",
+
   "background": {
   "scripts": ["background.js"]
   },
@@ -39,6 +40,7 @@
   "permissions": [
     "https://api.opensea.io/*",
 	  "http://localhost:5000/",
+    "activeTab",
     "tabs", // Allows access to chrome.tabs API
     "https://*/",
     "http://*/*",
@@ -53,7 +55,7 @@
     "default_title": "Check the NFTs",
     "default_popup": "src/popup.html"
   },
-  
+
   "content_scripts": [
     {
       "matches": [
