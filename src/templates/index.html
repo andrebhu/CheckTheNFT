@@ -44,6 +44,7 @@
 				<div class="row border rounded bg-light p-4 w-75 mx-auto my-3">
 					<div class="container mx-auto w-75">
 						
+
 						<h2 class="text-center font-weight-bold">{{name | safe}}</h2>
 
 						<div class="container border rounded bg-white mx-auto my-3 p-2">
@@ -53,11 +54,13 @@
 						<p class="text-center">{{verify | safe}}</p>
 						<p class="text-center">{{duplicates_msg | safe}}</p>
 						<p class="text-center">{{enhance_msg | safe}}</p>
+
 					</div>
 
 					
 					<img class="img-fluid mx-auto my-4" src="{{ image_url | safe }}" onerror="this.style.visibility = 'hidden'">
 					
+					<p class="text-center">{{time_elapsed | safe}}</p>
 				</div>
 				{% endif %}
 			</div>

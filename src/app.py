@@ -7,6 +7,7 @@ import json
 import warnings
 from serpapi import GoogleSearch
 from nn.check_if_real import predict
+from time import time
 
 warnings.filterwarnings('ignore')
 
@@ -15,18 +16,18 @@ app.config['SECRET_KEY'] = b'\xa7\xd8\x89JB\xa9sj\x05\x03S\x1a\x83\xb3\x15\xee\x
 
 
 def getOpenseaMetadata(contract_address:str, token_id:int):
-    '''
+    """
     Retrieves Opensea metadata about the NFT
-    '''    
+    """
     token_id = str(hex(token_id))
     r = requests.get(f"https://api.opensea.io/api/v1/metadata/{contract_address}/{token_id}?format=json")
     return json.loads(r.text)
 
 
 def verifyContract(contract_address) -> str:
-    '''
+    """
     Checks if contract was verified by Etherscan
-    '''
+    """
     url = "https://api.etherscan.io/api"
 
     data = {
@@ -47,7 +48,7 @@ def verifyContract(contract_address) -> str:
 
 def findDuplicates(image_url):
     """
-    url of the image for which you want to check if a duplicate exists
+    Url of the image for which you want to check if a duplicate exists
     """
     params = {
       "engine": "google_reverse_image",
@@ -55,19 +56,19 @@ def findDuplicates(image_url):
       "api_key": "cecf4cdc7fbbcf37ba6c3bf17a7d025894988aca8c4e41be585d23991ec5f7db"
     }
 
-    print("Call findDuplicates")
     results = GoogleSearch(params).get_dict()
-    print("Finished findDuplicates")
-
     image_results = results['image_results']
     links = [r['link'] for r in image_results]    
+
     return links
 
-def checkEnhance(image_url):
 
-    print("Call checkEnhance")
+def checkEnhance(image_url):
+    """
+    Use `nn` models to detect whether an image may have been enhanced or not
+    """
+
     enhanced = predict(image_url)
-    print("Finished checkEnhance")
 
     if enhanced:
         return "This NFT has no image enchancements"
@@ -75,7 +76,7 @@ def checkEnhance(image_url):
         return "This NFT may have image enchancements"
 
 
-# Functions for Thread
+# Thread functions
 def getEnhanceOutput(image_url, result, index):
     result[index] = checkEnhance(image_url)
 
@@ -83,6 +84,8 @@ def getDuplicatesOutput(image_url, result, index):
     result[index] = findDuplicates(image_url)
 
 
+
+# Application routes
 @app.route("/opensea", methods=["GET"])
 def opensea():
     try:
@@ -90,21 +93,22 @@ def opensea():
         if url:
             print(url)
             if 'https://opensea.io/assets/' in url:
-                contract_address, token_id = url.split('https://opensea.io/assets/')[1].split("/")
-                return redirect(f'/?contract={contract_address}&token={token_id}')
+                contract_address, token_id = url.split('0x')[1].split("/")
+                return redirect(f'/?contract=0x{contract_address}&token={token_id}')
         else:
             print(f"No url? {url}")
             return redirect(url_for('index'))
 
     except Exception as e:
         print(e)
-        return redirect('index.html')
+        return redirect(url_for('index'))
 
 
 
 @app.route("/", methods=["GET"])
 def index():
-     
+    start = time() # Analyzing performance
+
     token_id = request.args.get('token')
     contract_address = request.args.get('contract')
 
@@ -143,6 +147,9 @@ def index():
 
             verify = f"The NFT's <a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://etherscan.io/address/{contract_address}\">contract</a> is {verifyContract(contract_address)}"
             
+            end = time() # Analyzing performance
+            time_elapsed = "{:.2f}s".format(end - start)
+
             return render_template('index.html', **locals())
         
         except Exception as e:
