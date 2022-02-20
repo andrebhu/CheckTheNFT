@@ -5,20 +5,29 @@
  * change the corresponding popup.html file.
  */
 
-chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    var currentTab = tabs[0]; // there will be only one in this array
-    console.log(currentTab); // also has properties like currentTab.id
-    var tabUrl = currentTab.url;
+const element1 = document.getElementById("script");
+element1.addEventListener("click", goPython);
 
-    var flaskUrl = `http://localhost:5000/opensea?url=${tabUrl}`;
+function getValue(url){
+   var value= $.ajax({ 
+      url: url, 
+      async: false
+   }).responseJSON;
+	console.log(value)
+   return value;
+}
 
-    document.addEventListener('DOMContentLoaded', () => {
-        var y = document.getElementById("script");
-        y.addEventListener("click", openIndex);
-        
-    });
-    
-    function openIndex() {
-    chrome.tabs.create({active: true, url: flaskUrl});
-    }
-});
+function goPython(){
+	
+chrome.tabs.query({active: true, lastFocusedWindow: true, currentWindow: true}, tabs => {
+    let url = tabs[0].url;
+	console.log(url)
+	let newURL = "http://localhost:5000/opensea?url="+url
+//	chrome.tabs.create({ url: newURL });
+	var result = getValue(newURL)
+	console.log(result)
+	document.getElementById("duplicates").innerHTML = "Found "+result["duplicates"] +" duplicates";
+	document.getElementById("enhance").innerHTML = result["enhance_msg"];
+	document.getElementById("verify").innerHTML = result["verify"];
+})
+}

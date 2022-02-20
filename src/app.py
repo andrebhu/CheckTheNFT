@@ -57,9 +57,11 @@ def findDuplicates(image_url):
     }
 
     results = GoogleSearch(params).get_dict()
+    n_found = results['search_information']['total_results'] 
+    print("Finished findDuplicates")
+
     image_results = results['image_results']
     links = [r['link'] for r in image_results]    
-
     return links
 
 
@@ -150,7 +152,11 @@ def index():
             end = time() # Analyzing performance
             time_elapsed = "{:.2f}s".format(end - start)
 
-            return render_template('index.html', **locals())
+            # return render_template('index.html', **locals())
+            return {"duplicates": max(len(messages[0])-2, 0),
+                    "enhance_msg": enhance_msg,
+                    "verify": verify
+                    }
         
         except Exception as e:
             print(e)
