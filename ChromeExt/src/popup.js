@@ -8,7 +8,7 @@
 const element1 = document.getElementById("script");
 element1.addEventListener("click", async () => {    
     await goPython(); 
-	await toggleLoader();
+//	await toggleLoader();
 });
 
 function getValue(url){
@@ -44,6 +44,14 @@ function style(metric, value){
 	
 }
 
+function duplicate_sentence(duplicates){
+	// plural of duplicate handling if fuplicate not 1
+	if (duplicates != 1){
+		return "    "+duplicates +" duplicates found"
+	}
+	return "    "+duplicates +" duplicate found"
+}
+
 async function goPython(){
 	chrome.tabs.query({active: true, lastFocusedWindow: true, currentWindow: true}, tabs => {
 	    let url = tabs[0].url;
@@ -59,7 +67,7 @@ async function goPython(){
 		image.src = logo
 		image.height = 30
 		image.style="vertical-align:middle"
-		document.getElementById("duplicates").innerHTML = "    "+result["duplicates"] +" duplicates found";
+		document.getElementById("duplicates").innerHTML = duplicate_sentence(result["duplicates"])
 		document.getElementById("duplicates").style = "border:2px solid #696969; border-radius:5px; font-size:16px; padding-left: 10px; padding-right: 10px; padding-bottom: 5px; padding-top: 5px; display:inline height:30px; width:230px; text-align: left; font-weight: bold;"
 		document.getElementById("duplicates").style.backgroundColor = color
 		document.getElementById("duplicates").prepend(image)	
