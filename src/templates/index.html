@@ -20,14 +20,15 @@
 			<div class="row border rounded bg-light m-3 p-3 w-75 mx-auto">
 				<div class="col-md-12">
 					<p class="text-center">Sample: 0x1b79c7832ed9358E024F9e46E9c8b6f56633691B, 51</p>
+					<a href="./opensea?url=https://opensea.io/assets/0x1b79c7832ed9358E024F9e46E9c8b6f56633691B/51">test</a>
 					
-					<form action="/" method="post" enctype="multipart/form-data">
+					<form action="/" method="GET" enctype="multipart/form-data">
 						<div class="row mt-3 px-5 w-50 mx-auto">
 							<div class="row-md-6 mt-1">
-								<input class="form-control" type="text" name="contractAddress" placeholder='Contract Address' required/>
+								<input class="form-control" type="text" name="contract" id="contract" placeholder='Contract Address' required/>
 							</div>
 							<div class="row-md-6 mt-1">
-								<input class="form-control" type="text" name="tokenId" placeholder='Token ID' required/>
+								<input class="form-control" type="text" name="token" id="token" placeholder='Token ID' required/>
 							</div>
 						</div>
 
@@ -69,5 +70,6 @@
 		</div>
 		
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
 	</body>	
 </html>

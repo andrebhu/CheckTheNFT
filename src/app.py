@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 
-from flask import Flask, render_template, request, flash
+from flask import Flask, render_template, request, flash, url_for, redirect
 import requests
 import json
 
@@ -51,49 +51,69 @@ def checkEnhance(image_url):
     else:
         return "This NFT may have image enchancements."
 
+
+
+@app.route("/opensea", methods=["GET", "POST"])
+def opensea():
+    try:
+        url = request.args.get('url')
+        if url:
+            print(url)
+            if 'https://opensea.io/assets/' in url:
+                contract_address, token_id = url.split('https://opensea.io/assets/')[1].split("/")
+                return redirect(f'/?contract={contract_address}&token={token_id}')
+        else:
+            return redirect(url_for('index'))
+
+    except Exception as e:
+        print(e)
+        return redirect('index.html')
+
+
     
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    if request.method == "POST":
+    # if request.method == "POST":
 
+    # try:
+    #     token_id = int(request.form["tokenId"])
+    #     contract_address = request.form["contractAddress"]
+
+    # except Exception as e:
+    #     print(e)
+    #     flash('Invalid contract address or token ID', 'danger')
+    #     return render_template('index.html')   
+     
+    token_id = request.args.get('token')
+    contract_address = request.args.get('contract')
+
+    if token_id and contract_address:
         try:
-            token_id = int(request.form["tokenId"])
-            contract_address = request.form["contractAddress"]
+        
+            NFTMetadata = getOpenseaMetadata(contract_address, int(token_id))
+            
+            name = f"<a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://opensea.io/assets/{contract_address}/{token_id}\">{NFTMetadata['name']}</a>"
 
+            image_url = NFTMetadata['image']
+            description = NFTMetadata['description']                
+            
+            duplicates_links = findDuplicates(image_url) # Maybe make async in the future
+
+            duplicates_msg = f"We have found {len(duplicates_links)} similar results"
+
+            enhance_msg = checkEnhance(image_url)
+
+            verify = f"The NFT's <a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://etherscan.io/address/{contract_address}\">contract</a> is {verifyContract(contract_address)}"
+            
+            return render_template('index.html', **locals())
+        
         except Exception as e:
             print(e)
-            flash('Invalid contract address or token ID', 'danger')
-            return render_template('index.html')        
+            flash(f'Invalid NFT<br>{contract_address}<br>{token_id}', 'danger')
+    else:
+        flash('Missing contract address or token ID', 'danger')
 
-
-        if token_id and contract_address:
-
-            try:
-                NFTMetadata = getOpenseaMetadata(contract_address, token_id)
-                
-                # json_data = json.dumps(NFTMetadata, indent=4, sort_keys=True)
-
-                name = f"<a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://opensea.io/assets/{contract_address}/{token_id}\">{NFTMetadata['name']}</a>"
-
-                image_url = NFTMetadata['image']
-                description = NFTMetadata['description']                
-                
-                duplicates_links = findDuplicates(image_url) # Maybe make async in the future
-
-                duplicates_msg = f"We have found {len(duplicates_links)} similar results"
-
-                enhance_msg = checkEnhance(image_url)
-
-                verify = f"The NFT's <a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://etherscan.io/address/{contract_address}\">contract</a> is {verifyContract(contract_address)}"
-                
-                return render_template('index.html', **locals())
-            
-            except Exception as e:
-                print(e)
-                flash(f'Invalid NFT<br>{contract_address}<br>{token_id}', 'danger')
-        else:
-            flash('Missing contract address or token ID', 'danger')
 
     return render_template('index.html')  
 
