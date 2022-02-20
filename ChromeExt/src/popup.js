@@ -17,6 +17,13 @@ function getValue(url){
    return value;
 }
 
+function color_duplicates(duplicates){
+	if (duplicates > 0) {
+  		return "#FFAF42" 
+	}
+	return "#00aaf2"
+}
+
 function goPython(){
 	
 chrome.tabs.query({active: true, lastFocusedWindow: true, currentWindow: true}, tabs => {
@@ -26,7 +33,12 @@ chrome.tabs.query({active: true, lastFocusedWindow: true, currentWindow: true}, 
 //	chrome.tabs.create({ url: newURL });
 	var result = getValue(newURL)
 	console.log(result)
-	document.getElementById("duplicates").innerHTML = "Found "+result["duplicates"] +" duplicates";
+	document.getElementById("duplicates").innerHTML = "Found "+result["duplicates"] +" duplicates online";
+	document.getElementById("duplicates").style = "border:2px solid #696969; border-radius:5px; font-size:18px; padding-left: 10px; padding-bottom: 5px; padding-top: 5px"
+	document.getElementById("duplicates").style.backgroundColor = color_duplicates(result["duplicates"])
+
+		
+		
 	document.getElementById("enhance").innerHTML = result["enhance_msg"];
 	document.getElementById("verify").innerHTML = result["verify"];
 })
