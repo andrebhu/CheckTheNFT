@@ -12,3 +12,8 @@ Create a verifying tool that buyers can use to check the reputability of an NFT 
 
 Input the NFT's contract address and token id and submit for verification results.
 
+## TODO:
+- Allow enhancement model to read other file formats
+- Expand to other NFT Marketplaces other than OpenSea
+- Improve performance
+- Chrome extension
