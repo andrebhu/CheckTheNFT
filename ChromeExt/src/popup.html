@@ -35,27 +35,30 @@ div {
   padding-top: 10px;
   padding-bottom:1px;
   background-color: white;
+  text-color: "#202223"
 }
 </style>
 
 <body>
-  <div style="width:280px;">
+  <div style="width:280px; border:2px solid #00aaf2; border-radius:5px">
     <div class="container">
         <center>
-            <img style='vertibutt-align:bottom' src="https://raw.githubusercontent.com/andrebhu/CheckTheNFT/main/ChromeExt/icons/verify-32.png", alt="actual">
-            <div style='vertibutt-align:bottom; display:inline;'>
+            <img style='vertibutt-align:middle' src="https://raw.githubusercontent.com/andrebhu/CheckTheNFT/main/ChromeExt/icons/verify-32.png", alt="actual">
+            <div style='display:inline'>
                 <b style="font-size:30px">NFT Checker</b>
             </div>
             <h2 style="font-size:17px">Scan the NFT on this page?</h2>
-        <button class="button button1" id="script">Scan</button>
-		</center>
+        <button class="button button1" id="script" style = 'border:2px solid #696969; border-radius:5px;'> 		
+			<svg id="loader" width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-rolling" style="display:none; vertical-align:middle"><circle cx="50" cy="50" fill="none" ng-attr-stroke="{{config.color}}" ng-attr-stroke-width="{{config.width}}" ng-attr-r="{{config.radius}}" ng-attr-stroke-dasharray="{{config.dasharray}}" stroke=white stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138" transform="rotate(149.836 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;360 50 50" keyTimes="0;1" dur="1s" begin="0s" repeatCount="indefinite"></animateTransform></circle></svg>
+			Scan
+		</button>		
         <div></div>
-		<div id = "verify"> </div>
+		<div id = "verify"><h2> </h2> </div>
 		<div></div>
       	<div id = "duplicates">  </div>
 		<div></div>
 		<div id = "enhance">  </div>
-		
+		</center>
 		<div></div>
 		
     </div>

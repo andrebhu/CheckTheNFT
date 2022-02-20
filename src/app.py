@@ -40,9 +40,9 @@ def verifyContract(contract_address) -> str:
     r = requests.get(url, data=data)
 
     if r.json()['status'] == '1':
-        return 'verified'
+        return 'Verified'
     elif r.json()['status'] == '0':
-        return 'unverified'
+        return 'Unverified'
 
 
 
@@ -147,7 +147,7 @@ def index():
             # enhance_msg = checkEnhance(image_url)
             # enhance_msg = "This image may be enhanced"
 
-            verify = f"NFT's <a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://etherscan.io/address/{contract_address}\">contract</a> is {verifyContract(contract_address)}"
+            verify = f"{verifyContract(contract_address)} NFT <a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://etherscan.io/address/{contract_address}\">contract</a>"
             
             end = time() # Analyzing performance
             time_elapsed = "{:.2f}s".format(end - start)
